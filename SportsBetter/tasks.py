@@ -4,7 +4,7 @@ import tweepy
 import time #pause between API calls 
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer #sentiment analysis tool
 
-API_KEY = "74e277a5bce0ae06d3fd337a6bd6f50a"
+API_KEY = "API_KEY_FOR_WHATEVER_OPEN_SOURCE_SPORTS_DATA_WEBSITE"
 SPORT = 'icehockey_nhl'
 # Twitter API credentials (replace with your own)
 TWITTER_API_KEY = "TWITTER_API_KEY"
