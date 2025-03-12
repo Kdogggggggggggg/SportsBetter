@@ -7,11 +7,11 @@ from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer #sentiment 
 API_KEY = "74e277a5bce0ae06d3fd337a6bd6f50a"
 SPORT = 'icehockey_nhl'
 # Twitter API credentials (replace with your own)
-TWITTER_API_KEY = "sFA588mhCM8CTgl8IY4P0xPeT"
-TWITTER_API_SECRET = "OcmzPTOImP1035J8sKbqsyy6LyswGsfmgINRLk0C22d9pNVIFJ"
-TWITTER_ACCESS_TOKEN = "3112053546-l3UO98frCNYmkLzgGawi8AXK4KGprULBWXpfRas"
-TWITTER_ACCESS_SECRET = "XwhS8vwnhLpHBYHumZ8RnRlNnXRBxbBMJWfpgtPYjAWW1"
-TWITTER_BEARER_TOKEN = "AAAAAAAAAAAAAAAAAAAAAJaUzwEAAAAAqDSDMCRy7ILHa%2BgZNzw%2FU68yFI0%3D4vYzlKQ0OUpwTbNkvqYV1xBkU72S1lu2PanqH0fBLhF7Dug09S"
+TWITTER_API_KEY = "TWITTER_API_KEY"
+TWITTER_API_SECRET = "TWITTER_API_SECRET_KEY"
+TWITTER_ACCESS_TOKEN = "TWITTER_ACCESS_TOKEN"
+TWITTER_ACCESS_SECRET = "TWITTER_ACCESS_SECRET"
+TWITTER_BEARER_TOKEN = "TWITTER_BEARER-TOKEN"
 
 # Authenticate with Twitter API
 auth = tweepy.OAuthHandler(TWITTER_API_KEY, TWITTER_API_SECRET)
@@ -20,6 +20,17 @@ api = tweepy.API(auth, wait_on_rate_limit=True)
 
 # Use Twitter API v2 Client
 client = tweepy.Client(bearer_token=TWITTER_BEARER_TOKEN)
+
+NHL_TEAMS = [
+    "Anaheim Ducks", "Arizona Coyotes", "Boston Bruins", "Buffalo Sabres",
+    "Calgary Flames", "Carolina Hurricanes", "Chicago Blackhawks", "Colorado Avalanche",
+    "Columbus Blue Jackets", "Dallas Stars", "Detroit Red Wings", "Edmonton Oilers",
+    "Florida Panthers", "Los Angeles Kings", "Minnesota Wild", "Montreal Canadiens",
+    "Nashville Predators", "New Jersey Devils", "New York Islanders", "New York Rangers",
+    "Ottawa Senators", "Philadelphia Flyers", "Pittsburgh Penguins", "San Jose Sharks",
+    "Seattle Kraken", "St. Louis Blues", "Tampa Bay Lightning", "Toronto Maple Leafs",
+    "Vancouver Canucks", "Vegas Golden Knights", "Washington Capitals", "Winnipeg Jets"
+]
 
 
 def get_nhl_data():
@@ -50,15 +61,14 @@ def get_nhl_data():
 
 def analyze_sentiment():
     analyzer = SentimentIntensityAnalyzer()
-    teams = ["Toronto Maple Leafs", "Boston Bruins", "Edmonton Oilers"]
+    teams = NHL_TEAMS
     sentiment_scores = {}
 
     for team in teams:
         try:
-            # ⬇️ FIX: Add delay before each request to avoid rate limits
             time.sleep(5)
 
-            tweets = client.search_recent_tweets(query=team, max_results=10)   # Reduced to 10 tweets
+            tweets = client.search_recent_tweets(query=team, max_results=10)   
 
             total_score = 0
             for tweet in tweets.data:
@@ -70,6 +80,6 @@ def analyze_sentiment():
 
         except tweepy.TooManyRequests:
             print(f"Rate limit exceeded. Skipping {team} and waiting...")
-            time.sleep(900)  # Wait 15 minutes before retrying
+            time.sleep(900)  # Wait 15 minutes before retrying TO HELP REDUCE LOAD ON CALLS
 
     return sentiment_scores
